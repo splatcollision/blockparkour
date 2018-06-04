@@ -7,35 +7,63 @@ public class GrappleController : MonoBehaviour {
 
 	public GameObject grapple;
 	public GameObject cannon;
-	public GameObject camera;
-//	public Transform shootPos;
+	public GameObject player;
+	public float flySpeed;
 
+	private bool isRetract = false;
 	private GameObject firedGrapple;
-//	private Rigidbody grappleRb;
+	private bool didFireGrapple = false;
+	private GrappleProjectile firedGrappleController;
+	private Vector3 flyTarget;
 	// Use this for initialization
 	void Start () {
-//		grappleRb = grapple.GetComponent<Rigidbody> ();
-//		Debug.Log (cannon);
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		float oldYRotation = cannon.transform.eulerAngles.y;
-		// get x from camera eulerAngles.x
-		float oldXRotation = camera.transform.eulerAngles.x;
 
-//		Debug.Log (oldXRotation);
+		if (isRetract) {
+			float step = flySpeed * Time.deltaTime;
+			player.transform.position = Vector3.MoveTowards(player.transform.position, flyTarget, step);
+			if (player.transform.position == flyTarget) {
+				isRetract = false;
+				firedGrapple = GameObject.FindGameObjectWithTag ("FiredGrapple");
+				Destroy (firedGrapple);
+			}
+		}
 
 		if (Input.GetMouseButtonDown (0)) {
-//			Debug.Log ("Fire Grapple");
-			// whats our orientation of the grapple cannon
+			
+			if (didFireGrapple) {
+					
+				// tell the player FPS controller to move towards the firedGrapple
+				//					Debug.Log(firedGrapple.transform.position);
+				if (firedGrappleController.didHitTarget) {
+					Debug.Log("destroy fired grapple");
+					
+					didFireGrapple = false;
+					
+					isRetract = true;	
+//						player.transform.position = firedGrappleController.hitPosition;
 
-			GameObject firedGrapple = Instantiate(grapple, cannon.transform.position, cannon.transform.rotation);
+					flyTarget = firedGrappleController.hitPosition;
+
+				}
+
+
+				
+			} else {
+				
+				GameObject firedGrapple = (GameObject) Instantiate (grapple, cannon.transform.position, cannon.transform.rotation);
+				didFireGrapple = true;
+				firedGrappleController = GameObject.FindGameObjectWithTag ("FiredGrapple").GetComponent<GrappleProjectile>();
+
+			}
+
 
 		}
-		if (Input.GetMouseButtonDown (1)) {
-//			Debug.Log ("Retract Grapple");
-		}
+
 	}
 }
