@@ -6,6 +6,7 @@ public class GrappleController : MonoBehaviour {
 
 
 	public GameObject grapple;
+//	public GameObject rope;
 	public GameObject cannon;
 	public GameObject player;
 	public float flySpeed;
@@ -56,7 +57,8 @@ public class GrappleController : MonoBehaviour {
 				
 			} else {
 				
-				GameObject firedGrapple = (GameObject) Instantiate (grapple, cannon.transform.position, cannon.transform.rotation);
+				Instantiate (grapple, cannon.transform.position, cannon.transform.rotation);
+//				Instantiate (rope, cannon.transform.position, cannon.transform.rotation);
 				didFireGrapple = true;
 				firedGrappleController = GameObject.FindGameObjectWithTag ("FiredGrapple").GetComponent<GrappleProjectile>();
 

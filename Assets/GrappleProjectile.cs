@@ -10,13 +10,11 @@ public class GrappleProjectile : MonoBehaviour {
 	public Vector3 hitPosition;
 
 	private float timeout = 3f; // 3 seconds of projectile travel time otherwise destroy self...
-//	private GameObject go;
+
+
 	// Use this for initialization
 	void Start () {
-//		speed = 4;
 		rb = GetComponent<Rigidbody>();
-//		go = GetComponent<GameObject> ();
-//		rb.velocity = transform.forward * speed;
 		Debug.Log("Projectile Started");
 		StartCoroutine(CheckForTimeout());
 	}
